@@ -1,7 +1,7 @@
-var express = require("express");
+var express = require('express');
 var app = express();
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt');
+var bcrypt = require('bcrypt-nodejs');
 
 mongoose.connect('mongodb://localhost/test');
 
@@ -13,8 +13,17 @@ db.once('open', function(callback) {
 	console.log('ayy, database is hooked up');
 });
 
+
+//TODO model definitions should be in separate files
 var UserSchema = mongoose.Schema({
 	username: {
+		type: String,
+		required: true,
+		index: {
+			unique: true
+		}
+	},
+	email: {
 		type: String,
 		required: true,
 		index: {
@@ -27,6 +36,26 @@ var UserSchema = mongoose.Schema({
 	}
 });
 
+UserSchema.pre('save', function(next) {
+	var user = this;
+
+	if(!user.isModified('password')) return next();
+
+	bcrypt.hash(this.password, null, null, function(err, hash) {
+		if(err) return next(err);
+
+		user.password = hash;
+		next();
+	});
+});
+
+UserSchema.methods.checkPassword = function(attempt, cb) {
+	bcrypt.compare(attempt, this.password, function(err, res) {
+		if(err) return cb(err);
+		cb(null, res);
+	});
+}
+
 var User = mongoose.model('User', UserSchema);
 
 app.use(express.static('client'));
@@ -36,9 +65,40 @@ app.get('/', function(req, res) {
 	res.send('ayy');
 });
 
+app.post('/user', function(req, res) {
+	req.body.params
+});
+
 var server = app.listen(5050, function() {
 	var host = server.address().address;
 	var port = server.address().port;
 
 	console.log('To do application is listening on %s:%s', host, port);
 });
+
+
+// this works. remove next commit
+//
+// var testUser = new User({
+// 	username: "ronjon",
+// 	email: "thisisnt.validated@all.com",
+// 	password: "dontrump4prez"
+// });
+
+// testUser.save(function(err) {
+// 	if(err) throw err;
+// 	console.log('test user saved!')
+// 	User.findOne({username: "ronjon"}, function(err, user) {
+// 		if(err) throw err;
+// 		console.log('test user located! stored password is ', user.password);
+// 		user.checkPassword("dontrump4prez", function(err, res) {
+// 			if(err) throw err;
+// 			console.log('for the correct password, we get a ', res);
+// 		});
+
+// 		user.checkPassword("4trumpdonprez", function(err, res) {
+// 			if(err) throw err;
+// 			console.log('for an incorrect password, we get a ', res);
+// 		});
+// 	});
+// });
