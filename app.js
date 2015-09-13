@@ -86,30 +86,3 @@ var server = app.listen(5050, function() {
 
 	console.log('To do application is listening on %s:%s', host, port);
 });
-
-
-// this works. remove next commit
-//
-// var testUser = new User({
-// 	username: "ronjon",
-// 	email: "thisisnt.validated@all.com",
-// 	password: "dontrump4prez"
-// });
-
-// testUser.save(function(err) {
-// 	if(err) throw err;
-// 	console.log('test user saved!')
-// 	User.findOne({username: "ronjon"}, function(err, user) {
-// 		if(err) throw err;
-// 		console.log('test user located! stored password is ', user.password);
-// 		user.checkPassword("dontrump4prez", function(err, res) {
-// 			if(err) throw err;
-// 			console.log('for the correct password, we get a ', res);
-// 		});
-
-// 		user.checkPassword("4trumpdonprez", function(err, res) {
-// 			if(err) throw err;
-// 			console.log('for an incorrect password, we get a ', res);
-// 		});
-// 	});
-// });
