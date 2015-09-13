@@ -4,7 +4,7 @@ app.factory("User", ["$resource", function($resource) {
 	return $resource('/user');
 }]);
 
-app.controller("LoginController", ["$scope", "User", function($scope, User) {
+app.controller("LoginController", ["$scope", "$mdToast", "User", function($scope, $mdToast, User) {
 	$scope.newUser = null;
 
 	$scope.prepNewUser = function() {
@@ -17,10 +17,15 @@ app.controller("LoginController", ["$scope", "User", function($scope, User) {
 	}
 
 	$scope.sendNewUserInfo = function() {
-		$scope.newUser.$save().then(function() {
-			console.log('relative success!');
+		var u = $scope.newUser;
+		if(u.password !== u.passwordConfirm) {
+			$mdToast.show($mdToast.simple().content("Passwords do not match"));
+			return;
+		}
+		u.$save().then(function() {
+			$mdToast.show($mdToast.simple().content("User Saved!"));
 		}, function(err) {
-			console.log('error', err);
+			$mdToast.show($mdToast.simple().content(err));
 		});
 	}
 }]);

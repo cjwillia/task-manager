@@ -4,6 +4,7 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 
+//TODO environment variables
 mongoose.connect('mongodb://localhost/test');
 
 var db = mongoose.connection;
