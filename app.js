@@ -1,5 +1,6 @@
 var express = require('express');
 var app = express();
+var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
 
@@ -61,12 +62,22 @@ var User = mongoose.model('User', UserSchema);
 app.use(express.static('client'));
 app.use('/bower_components', express.static('bower_components'));
 
+app.use(bodyParser.json());
+app.use(bodyParser.urlencoded({ extended: true}));
+
 app.get('/', function(req, res) {
 	res.send('ayy');
 });
 
 app.post('/user', function(req, res) {
-	req.body.params
+	var user = new User({});
+	user.username = req.body.username;
+	user.email = req.body.email;
+	user.password = req.body.password;
+	user.save(function(err) {
+		if(err) res.status(500).send({error: err});
+		res.send('User has been saved successfully');
+	});
 });
 
 var server = app.listen(5050, function() {
