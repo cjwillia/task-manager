@@ -2,7 +2,6 @@ var express = require('express');
 var app = express();
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
-var bcrypt = require('bcrypt-nodejs');
 
 //TODO environment variables
 mongoose.connect('mongodb://localhost/test');
@@ -15,49 +14,7 @@ db.once('open', function(callback) {
 	console.log('ayy, database is hooked up');
 });
 
-
-//TODO model definitions should be in separate files
-var UserSchema = mongoose.Schema({
-	username: {
-		type: String,
-		required: true,
-		index: {
-			unique: true
-		}
-	},
-	email: {
-		type: String,
-		required: true,
-		index: {
-			unique: true
-		}
-	},
-	password: {
-		type: String,
-		required: true
-	}
-});
-
-UserSchema.pre('save', function(next) {
-	var user = this;
-
-	if(!user.isModified('password')) return next();
-
-	bcrypt.hash(this.password, null, null, function(err, hash) {
-		if(err) return next(err);
-
-		user.password = hash;
-		next();
-	});
-});
-
-UserSchema.methods.checkPassword = function(attempt, cb) {
-	bcrypt.compare(attempt, this.password, function(err, res) {
-		if(err) return cb(err);
-		cb(null, res);
-	});
-}
-
+var UserSchema = require('./userSchema.js');
 var User = mongoose.model('User', UserSchema);
 
 app.use(express.static('client'));
