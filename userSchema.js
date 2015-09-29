@@ -1,5 +1,6 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
+var Tasks = require('./taskSchema.js');
 
 
 var UserSchema = mongoose.Schema({
@@ -20,6 +21,9 @@ var UserSchema = mongoose.Schema({
 	password: {
 		type: String,
 		required: true
+	},
+	tasks: {
+		type: [Tasks]
 	}
 });
 

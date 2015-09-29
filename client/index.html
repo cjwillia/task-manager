@@ -1,55 +1,16 @@
-<http ng-app="app">
+<html ng-app="app">
 	<head>
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
     	<link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
 	</head>
 	<body style="padding: 0px 30px;">
-		<div ng-controller="LoginController">
-			<md-tabs md-dynamic-height>
-				<md-tab label="Login"> 
-					<form name="loginForm" style="padding: 0px 25px;">
-						<h3>Login</h3>
-						<md-input-container>
-							<label>Username</label>
-							<input type="text" ng-model="user.name"/>
-						</md-input-container>
-						<md-input-container>
-							<label>Password</label>
-							<input type="password" ng-model="user.password"/>
-						</md-input-container>
-						<md-button ng-click="sendUserInfo()">Submit</md-button>
-					</form>
-				</md-tab>
-				<md-tab label="Create Account" ng-click="prepNewUser()">
-					<form name="newAccountForm" style="padding: 0px 25px;">
-						<h3>Create Account</h3>
-						<md-input-container>
-							<label>Email</label>
-							<input type="text" ng-model="newUser.email"/>
-						</md-input-container>
-						<md-input-container>
-							<label>Username</label>
-							<input type="text" ng-model="newUser.username"/>
-						</md-input-container>
-						<md-input-container>
-							<label>Password</label>
-							<input type="password" ng-model="newUser.password"/>
-						</md-input-container>
-						<md-input-container>
-							<label>Confirm Password</label>
-							<input type="password" ng-model="newUser.passwordConfirm"/>
-						</md-input-container>
-						<md-button ng-click="sendNewUserInfo()">Submit</md-button>
-					</form>
-				</md-tab>
-			</md-tabs>
-		</div>
-
-		<script type="text/javascript" src="angular.min.js"></script>
-		<script type="text/javascript" src="/bower_components/angular-resource/angular-resource.js"></script>
-    	<script src="/bower_components/angular-aria/angular-aria.js"></script>
-    	<script src="/bower_components/angular-animate/angular-animate.js"></script>
-    	<script src="/bower_components/angular-material/angular-material.js"></script>
+		<div ng-view></div>	
+		<script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
+		<script type="text/javascript" src="/bower_components/angular-resource/angular-resource.min.js"></script>
+    	<script src="/bower_components/angular-aria/angular-aria.min.js"></script>
+    	<script src="/bower_components/angular-animate/angular-animate.min.js"></script>
+    	<script src="/bower_components/angular-material/angular-material.min.js"></script>
+    	<script src="/bower_components/angular-route/angular-route.min.js"></script>
 		<script type="text/javascript" src="app.js"></script>
 	</body>
-</http>
+</html>
