@@ -1,7 +1,19 @@
 var express = require('express');
 var router = express.Router();
-
 module.exports = function(User) {
+
+  var checkLoginSession = function(session, success, fail) {
+  	var id = session.user_id;
+    User.findById(id, function(err, user) {
+      if(err)
+        fail();
+      if(user)
+        success();
+      else
+        fail();
+    });
+  };
+
   router.post('/user', function(req, res) {
   	var user = new User({
   		username: req.body.username,
@@ -34,6 +46,13 @@ module.exports = function(User) {
   				}
   			});
   	});
+  });
+
+  router.all('*', function(req, res, next) {
+    function fail() {
+      res.status(403).send({error: "Access Denied: Authorization required."});
+    }
+    checkLoginSession(req.session, next, fail);
   });
 
   return router;

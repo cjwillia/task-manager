@@ -30,33 +30,20 @@ app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(authentication);
 
-var checkLoginSession = function(session) {
-	return typeof session.user === "string" ? true : false;
-}
-
-app.get('/', function(req, res) {
-	res.send('ayy');
-});
-
 app.get('/profile/:id', function(req, res) {
-	if(checkLoginSession(req.session)){
-		res.send({user: req.session.user});
-	}
-	else {
-		res.status(403).send("You have to be logged in to view this!");
-	}
+	res.send({user: req.session.user});
 });
 
 app.get('/tasks', function(req, res) {
-	if(checkLoginSession(req.session)) {
-		Task.find(function(err, tasks) {
-			if(err) res.status(500).send({error: err});
-			else res.send({ 'tasks': tasks.toObject() });
-		});
-	}
-	else {
-		res.status(403).send({error: "you must be logged in to do that."});
-	}
+	Task.find(function(err, tasks) {
+		if(err) res.status(500).send({error: err});
+		else{
+			if(tasks.length)
+				res.send({ 'tasks': tasks.toObject() });
+			else
+				res.status(500).send({error: "No tasks. Don't be stupid."}); //this is changing very soon.
+		}
+	});
 });
 
 app.post('/task', function(req, res) {
