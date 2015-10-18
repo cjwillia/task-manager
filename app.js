@@ -15,17 +15,20 @@ db.once('open', function(callback) {
 	console.log('ayy, database is hooked up');
 });
 
-var UserSchema = require('./userSchema.js');
-var TaskSchema = require('./taskSchema.js');
+var UserSchema = require('./db/userSchema.js');
+var TaskSchema = require('./db/taskSchema.js');
 var User = mongoose.model('User', UserSchema);
 var Task = mongoose.model('Task', TaskSchema);
 
 app.use(express.static('client'));
 app.use('/bower_components', express.static('bower_components'));
 
+var authentication = require('./routers/authentication.js')(User);
+
 app.use(session({secret: "ther3als3cr3th3lly3ahil0v33ncrypti0n"}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
+app.use(authentication);
 
 var checkLoginSession = function(session) {
 	return typeof session.user === "string" ? true : false;
@@ -37,45 +40,11 @@ app.get('/', function(req, res) {
 
 app.get('/profile/:id', function(req, res) {
 	if(checkLoginSession(req.session)){
-		res.redirect('/profile.html');
+		res.send({user: req.session.user});
 	}
 	else {
 		res.status(403).send("You have to be logged in to view this!");
 	}
-});
-
-app.post('/user', function(req, res) {
-	var user = new User({
-		username: req.body.username,
-		email: req.body.email,
-		password: req.body.password
-	});
-	user.save(function(err) {
-		if(err) res.status(500).send({error: err});
-		else res.send('User has been saved successfully');
-	});
-});
-
-app.post('/login', function(req, res) {
-	// find user
-	User.findOne({username: req.body.username}, function(err, user) {
-		if(err) res.status(500).send({error: err});
-		else if (!user)
-			res.status(401).send({error: "Invalid Input"})
-		else
-			user.checkPassword(req.body.password, function(err, valid) {
-				if (err) res.status(500).send({error: err});
-				else {
-					if(valid) {
-						//initialize session
-						req.session.user = user.username;
-						req.session.user_id = user._id;
-						res.redirect('/profile.html');
-					}
-					else res.status(401).send({error: "Invalid Input"});
-				}
-			});
-	});
 });
 
 app.get('/tasks', function(req, res) {

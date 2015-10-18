@@ -22,9 +22,7 @@ app.factory("User", ["$resource", function($resource) {
 }]);
 
 app.factory("Profile", ["$resource", function($resource) {
-	return $resource('/profile', {}, {
-		//not yet implemented
-	});
+	return $resource('/profile/:userId', {userId:'@id'});
 }]);
 
 app.controller("LoginController", ["$scope", "$mdToast", "User", function($scope, $mdToast, User) {
@@ -59,5 +57,7 @@ app.controller("LoginController", ["$scope", "$mdToast", "User", function($scope
 }]);
 
 app.controller("ProfileController", ["$scope", "$mdToast", "Profile", function($scope, $mdToast, Profile) {
-
+	$scope.test = function() {
+		//todo
+	}
 }]);
