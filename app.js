@@ -16,9 +16,13 @@ db.once('open', function(callback) {
 });
 
 var UserSchema = require('./db/userSchema.js');
-var TaskSchema = require('./db/taskSchema.js');
+var ProfileSchema = require('./db/profileSchema.js');
+var DungeonSchema = require('./db/dungeonSchema.js');
+var MonsterSchema = require('./db/monsterSchema.js');
 var User = mongoose.model('User', UserSchema);
-var Task = mongoose.model('Task', TaskSchema);
+var Profile = mongoose.model('Profile', ProfileSchema);
+var Dungeon = mongoose.model('Dungeon', DungeonSchema);
+var Monster = mongoose.model('Monster', MonsterSchema);
 
 app.use(express.static('client'));
 app.use('/bower_components', express.static('bower_components'));
@@ -29,26 +33,6 @@ app.use(session({secret: "ther3als3cr3th3lly3ahil0v33ncrypti0n"}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(authentication);
-
-app.get('/profile/:id', function(req, res) {
-	res.send({user: req.session.user});
-});
-
-app.get('/tasks', function(req, res) {
-	Task.find(function(err, tasks) {
-		if(err) res.status(500).send({error: err});
-		else{
-			if(tasks.length)
-				res.send({ 'tasks': tasks.toObject() });
-			else
-				res.status(500).send({error: "No tasks. Don't be stupid."}); //this is changing very soon.
-		}
-	});
-});
-
-app.post('/task', function(req, res) {
-	//add a new task to signed in user
-});
 
 var server = app.listen(5050, function() {
 	var host = server.address().address;
