@@ -1,5 +1,10 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
+var ProfileSchema = require('./profileSchema.js');
+
+var userProfilesValidator = function(profiles) {
+	return profiles.length <= 3;
+}
 
 var UserSchema = mongoose.Schema({
 	username: {
@@ -19,6 +24,13 @@ var UserSchema = mongoose.Schema({
 	password: {
 		type: String,
 		required: true
+	},
+	profiles: {
+		type: [ProfileSchema],
+		validate: {
+			validator: userProfilesValidator,
+			message: "Cannot add more than three profiles."
+		}
 	}
 });
 

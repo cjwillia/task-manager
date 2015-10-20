@@ -1,4 +1,10 @@
 var mongoose = require('mongoose');
+var ObjectId = mongoose.Schema.Types.ObjectId;
+
+var targetLocks = mongoose.Schema({
+  dungeonId: [{type: ObjectId, ref: "Dungeon", required: true}],
+  monsterId: [{type: ObjectId, ref: "Monster", required: true}]
+});
 
 var ProfileSchema = mongoose.Schema({
   name: {
@@ -17,20 +23,8 @@ var ProfileSchema = mongoose.Schema({
     type: Number,
     required: true
   },
-  dungeonIds: {
-    type: [String],
-    required: true
-  },
+  active_dungeons: [{type: ObjectId, ref: 'Dungeon'}],
   targetLocks: [targetLocks]
 });
 
-var targetLocks = mongoose.Schema({
-  dungeonId: {
-    type: String,
-    required: true
-  },
-  monsterId: {
-    type: String,
-    required: true
-  }
-});
+module.exports = ProfileSchema;

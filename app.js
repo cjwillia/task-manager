@@ -38,5 +38,7 @@ var server = app.listen(5050, function() {
 	var host = server.address().address;
 	var port = server.address().port;
 
+	host = host === "::" ? "localhost" : host;
+
 	console.log('To do application is listening on %s:%s', host, port);
 });
