@@ -3,7 +3,10 @@ var profile = angular.module("profile", ["ngMaterial", "ngRoute"]);
 profile.config(["$routeProvider", function($routeProvider) {
 	$routeProvider
 	.when("/profile-select", {
-		templateUrl: "profile.html"
+		templateUrl: "/site/profile/profile-select.html"
+	})
+	.when("/profile", {
+		templateUrl: "/site/profile/profile.html"
 	});
 }]);
 
@@ -11,4 +14,8 @@ profile.controller("ProfileController", ["$scope", "$mdToast", "Profile", functi
 	$scope.test = function() {
 		//todo
 	}
+}]);
+
+profile.controller("ProfileSelectController", ["$scope", "$mdToast", "Profile", function($scope, $mdToast, Profile) {
+	console.log("Hello, world!");
 }]);

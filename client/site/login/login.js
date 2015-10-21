@@ -3,10 +3,10 @@ var login = angular.module('login', ["ngMaterial", "ngRoute"]);
 login.config(["$routeProvider", function($routeProvider) {
   $routeProvider
     .when('/login', {
-      templateUrl: 'login.html'
+      templateUrl: '/site/login/login.html'
     })
     .otherwise({
-      templateUrl: 'login.html'
+      templateUrl: '/site/login/login.html'
     });
 }]);
 
