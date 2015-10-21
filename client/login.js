@@ -1,14 +1,16 @@
 var login = angular.module('login', ["ngMaterial", "ngRoute"]);
 
-login.config(function($routeProvider) {
+login.config(["$routeProvider", function($routeProvider) {
   $routeProvider
     .when('/login', {
-      templateUrl: 'login.html',
-      controller: 'LoginController'
+      templateUrl: 'login.html'
+    })
+    .otherwise({
+      templateUrl: 'login.html'
     });
-});
+}]);
 
-login.controller("LoginController", ["$scope", "$mdToast", "User", function($scope, $mdToast, User) {
+login.controller("LoginController", ["$scope", "$mdToast", "User", "$location", function($scope, $mdToast, User, $location) {
 	$scope.newUser = null;
 	$scope.user = new User();
 
@@ -19,9 +21,11 @@ login.controller("LoginController", ["$scope", "$mdToast", "User", function($sco
 
 	$scope.sendUserInfo = function() {
 		$scope.user.$login().then(function() {
-			$mdToast.show($mdToast.simple().content("WHOOO"));
-		}, function() {
-			$mdToast.show($mdToast.simple().content("try again fgt."));
+			$mdToast.show($mdToast.simple().content("Logged in successfully"));
+      $location.path("/profile-select");
+		}, function(err) {
+      console.log(err);
+			$mdToast.show($mdToast.simple().theme('default').content(err.data.error));
 		});
 	}
 
@@ -34,7 +38,7 @@ login.controller("LoginController", ["$scope", "$mdToast", "User", function($sco
 		u.$save().then(function() {
 			$mdToast.show($mdToast.simple().content("User Saved!"));
 		}, function(err) {
-			$mdToast.show($mdToast.simple().content(err));
+			$mdToast.show($mdToast.simple().theme('default').content(err.data.error));
 		});
 	}
 }]);

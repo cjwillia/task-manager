@@ -1,7 +1,9 @@
-var app = angular.module("app", ["resources", "login"]);
+var app = angular.module("app", ["ngMaterial", "resources", "login", "profile"]);
 
-app.controller("ProfileController", ["$scope", "$mdToast", "Profile", function($scope, $mdToast, Profile) {
-	$scope.test = function() {
-		//todo
-	}
-}]);
+app.config(["$mdThemingProvider", function($mdThemingProvider) {
+	$mdThemingProvider.theme('default')
+		.primaryPalette('blue-grey')
+		.accentPalette('blue')
+		.warnPalette('red')
+		.backgroundPalette('light-blue');
+}])

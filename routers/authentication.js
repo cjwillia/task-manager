@@ -31,7 +31,7 @@ module.exports = function(User) {
   	User.findOne({username: req.body.username}, function(err, user) {
   		if(err) res.status(500).send({error: err});
   		else if (!user)
-  			res.status(401).send({error: "Invalid Input"})
+  			res.status(401).send({error: "Invalid Login Credentials"})
   		else
   			user.checkPassword(req.body.password, function(err, valid) {
   				if (err) res.status(500).send({error: err});
@@ -42,7 +42,7 @@ module.exports = function(User) {
   						req.session.user_id = user._id;
   						res.status(200).send({user_id: user._id});
   					}
-  					else res.status(401).send({error: "Invalid Input"});
+  					else res.status(401).send({error: "Invalid Login Credentials"});
   				}
   			});
   	});
@@ -50,7 +50,7 @@ module.exports = function(User) {
 
   router.all('*', function(req, res, next) {
     function fail() {
-      res.status(403).send({error: "Access Denied: Authorization required."});
+      res.status(401).send({error: "Access Denied: Authorization required."});
     }
     checkLoginSession(req.session, next, fail);
   });
