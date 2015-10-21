@@ -1,4 +1,10 @@
-var app = angular.module("app", ["ngMaterial", "resources", "login", "profile"]);
+var app = angular.module("app", [
+	"ngMaterial",
+	"resources",
+	"login",
+	"profile",
+	"toolbars"
+]);
 
 app.config(["$mdThemingProvider", function($mdThemingProvider) {
 	$mdThemingProvider.theme('default')
@@ -6,4 +12,4 @@ app.config(["$mdThemingProvider", function($mdThemingProvider) {
 		.accentPalette('blue')
 		.warnPalette('red')
 		.backgroundPalette('light-blue');
-}])
+}]);

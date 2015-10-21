@@ -7,10 +7,11 @@ module.exports = function(User) {
     User.findById(id, function(err, user) {
       if(err)
         fail();
-      if(user)
-        success();
       else
-        fail();
+        if(user)
+          success();
+        else
+          fail();
     });
   };
 
@@ -27,7 +28,6 @@ module.exports = function(User) {
   });
 
   router.post('/login', function(req, res) {
-  	// find user
   	User.findOne({username: req.body.username}, function(err, user) {
   		if(err) res.status(500).send({error: err});
   		else if (!user)
@@ -53,6 +53,11 @@ module.exports = function(User) {
       res.status(401).send({error: "Access Denied: Authorization required."});
     }
     checkLoginSession(req.session, next, fail);
+  });
+
+  router.post("/logout", function(req, res) {
+    req.session.destroy();
+    res.send(200);
   });
 
   return router;
