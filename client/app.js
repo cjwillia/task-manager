@@ -3,13 +3,12 @@ var app = angular.module("app", [
 	"resources",
 	"login",
 	"profile",
-	"toolbars"
+	"toolbar"
 ]);
 
 app.config(["$mdThemingProvider", function($mdThemingProvider) {
 	$mdThemingProvider.theme('default')
-		.primaryPalette('blue-grey')
-		.accentPalette('blue')
-		.warnPalette('red')
-		.backgroundPalette('light-blue');
+		.primaryPalette('indigo')
+		.accentPalette('blue-grey')
+		.warnPalette('red');
 }]);

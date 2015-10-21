@@ -1,7 +1,8 @@
 toolbars.directive('topToolbar', function() {
   return {
-    scope: {
-      
+    templateUrl: "/site/toolbar/top.html",
+    link: function(scope, element, attrs, controller) {
+      console.log('post-link!');
     }
   }
 });

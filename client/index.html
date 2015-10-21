@@ -3,9 +3,13 @@
 		<meta name="viewport" content="initial-scale=1, maximum-scale=1, user-scalable=no" />
     	<link rel="stylesheet" href="/bower_components/angular-material/angular-material.css">
 	</head>
-	<body style="padding: 0px 30px;">
-		<div top-toolbar></div>
-		<div ng-view></div>
+	<body>
+		<div layout="column" layout-fill>
+			<div top-toolbar></div>
+			<md-content>
+				<div ng-view></div>
+			</md-content>
+		</div>
 		<!-- BEGIN LIBRARY IMPORTS  -->
 		<script type="text/javascript" src="/bower_components/angular/angular.min.js"></script>
 		<script type="text/javascript" src="/bower_components/angular-resource/angular-resource.min.js"></script>
@@ -22,7 +26,7 @@
 		<script type="text/javascript" src="/resources/src/user.js"></script>
 		<script type="text/javascript" src="/site/login/login.js"></script>
 		<script type="text/javascript" src="/site/profile/profile.js"></script>
-		<script type="text/javascript" src="/site/toolbar/toolbars.js"></script>
+		<script type="text/javascript" src="/site/toolbar/toolbar.js"></script>
 		<script type="text/javascript" src="/site/toolbar/top.js"></script>
 		<!-- END SOURCE IMPORTS  -->
 	</body>
