@@ -16,13 +16,7 @@ db.once('open', function(callback) {
 });
 
 var UserSchema = require('./db/userSchema.js');
-var ProfileSchema = require('./db/profileSchema.js');
-var DungeonSchema = require('./db/dungeonSchema.js');
-var MonsterSchema = require('./db/monsterSchema.js');
 var User = mongoose.model('User', UserSchema);
-var Profile = mongoose.model('Profile', ProfileSchema);
-var Dungeon = mongoose.model('Dungeon', DungeonSchema);
-var Monster = mongoose.model('Monster', MonsterSchema);
 
 app.use(express.static('client'));
 app.use('/bower_components', express.static('bower_components'));

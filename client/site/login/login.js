@@ -22,7 +22,6 @@ login.controller("LoginController", ["$scope", "$mdToast", "User", "$location", 
 	$scope.sendUserInfo = function() {
 		$scope.user.$login().then(function() {
 			$mdToast.show($mdToast.simple().content("Logged in successfully"));
-      $location.path("/profile-select");
 		}, function(err) {
       console.log(err);
 			$mdToast.show($mdToast.simple().theme('default').content(err.data.error));
