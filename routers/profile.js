@@ -8,8 +8,12 @@ module.exports = function(User, Profile) {
 
     router.get('/profiles', function(req, res) {
         var userId = req.session.userId;
-        Profile.find({belonging_to: userId}, function(err, profiles) {
-            if(err) res.status(500).send({error: err});
+        Profile.find({
+            belonging_to: userId
+        }, function(err, profiles) {
+            if (err) res.status(500).send({
+                error: err
+            });
             else {
                 console.log(profiles);
                 res.status(200).send(profiles);
@@ -32,17 +36,22 @@ module.exports = function(User, Profile) {
         var userId = req.session.userId;
         var name = req.body.name;
         User.findById(userId, function(err, user) {
-            if(err)
-                res.status(500).send({error: err});
-            else if(user) {
+            if (err)
+                res.status(500).send({
+                    error: err
+                });
+            else if (user) {
                 var profile = createProfileForUser(userId, name);
                 profile.save(function(err) {
-                    if(err) res.status(500).send({error: err});
+                    if (err) res.status(500).send({
+                        error: err
+                    });
                     else res.send(200);
                 });
-            }
-            else
-                res.status(404).send({error: "User with id: "+userId+" not found"});
+            } else
+                res.status(404).send({
+                    error: "User with id: " + userId + " not found"
+                });
         });
     });
 
