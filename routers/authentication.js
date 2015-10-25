@@ -25,7 +25,7 @@ module.exports = function(User) {
             if (err) res.status(500).send({
                 error: err
             });
-            else res.send(200);
+            else res.sendStatus(200);
         });
     });
 
@@ -72,7 +72,7 @@ module.exports = function(User) {
 
     router.post("/logout", function(req, res) {
         req.session.destroy();
-        res.send(200);
+        res.sendStatus(200);
     });
 
     return router;

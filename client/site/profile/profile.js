@@ -27,9 +27,10 @@ profile.controller("ProfileSelectController", ["$scope", "$mdToast", "Profile", 
             if (p) {
                 $mdToast.show($mdToast.simple().content("Profile Created."));
                 $scope.profiles = Profile.query();
-            } else {
-                $mdToast.show($mdToast.simple().content("Failed to create profile"));
             }
+        }, function(err) {
+            $mdToast.show($mdToast.simple().content(err.data.error.errors.profiles.message));
         });
     };
+
 }]);

@@ -1,6 +1,6 @@
 var mongoose = require('mongoose');
 var bcrypt = require('bcrypt-nodejs');
-var ProfileSchema = require('./profileSchema.js');
+var ObjectId = mongoose.Schema.Types.ObjectId;
 
 var userProfilesValidator = function(profiles) {
     return profiles.length <= 3;
@@ -26,7 +26,8 @@ var UserSchema = mongoose.Schema({
         required: true
     },
     profiles: {
-        type: [ProfileSchema],
+        type: [ObjectId],
+        ref: 'Profile',
         validate: {
             validator: userProfilesValidator,
             message: "Cannot add more than three profiles."
@@ -46,6 +47,15 @@ UserSchema.pre('save', function(next) {
         next();
     });
 });
+
+UserSchema.methods.addProfile = function(profile, cb) {
+    console.log('we tryna add out here');
+    this.profiles.push(profile);
+    this.save(function(err) {
+        if (err) cb(err);
+        else cb();
+    });
+};
 
 UserSchema.methods.checkPassword = function(attempt, cb) {
     bcrypt.compare(attempt, this.password, function(err, res) {

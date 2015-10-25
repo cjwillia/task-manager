@@ -21,15 +21,37 @@ module.exports = function(User, Profile) {
         });
     });
 
-    function createProfileForUser(userId, name) {
-        var profile = new Profile({
-            name: name,
-            health: NEW_PROFILE_MAX_HEALTH,
-            maxHealth: NEW_PROFILE_MAX_HEALTH,
-            level: NEW_PROFILE_LEVEL,
-            belonging_to: userId
+    function createProfileForUser(userId, name, req, res) {
+        User.findById(userId, function(err, user) {
+            if (err) res.status(500).send({
+                error: err
+            });
+            else if (user) {
+                var profile = new Profile({
+                    'name': name,
+                    health: NEW_PROFILE_MAX_HEALTH,
+                    maxHealth: NEW_PROFILE_MAX_HEALTH,
+                    level: NEW_PROFILE_LEVEL,
+                    belonging_to: user._id
+                });
+
+                profile.save(function(err) {
+                    if(err) res.status(500).send({
+                        error: err
+                    });
+                    else user.addProfile(profile._id, function(err) {
+                        if (err) {
+                            profile.remove(function() {
+                                res.status(500).send({
+                                    error: err
+                                });
+                            });
+                        }
+                        else res.sendStatus(200);
+                    });
+                });
+            }
         });
-        return profile;
     }
 
     router.post('/profile', function(req, res) {
@@ -41,13 +63,7 @@ module.exports = function(User, Profile) {
                     error: err
                 });
             else if (user) {
-                var profile = createProfileForUser(userId, name);
-                profile.save(function(err) {
-                    if (err) res.status(500).send({
-                        error: err
-                    });
-                    else res.send(200);
-                });
+                createProfileForUser(userId, name, req, res);
             } else
                 res.status(404).send({
                     error: "User with id: " + userId + " not found"
