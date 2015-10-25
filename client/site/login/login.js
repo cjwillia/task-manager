@@ -17,7 +17,7 @@ login.controller("LoginController", ["$scope", "$mdToast", "User", "$location", 
 	$scope.prepNewUser = function() {
 		if(!$scope.newUser)
 			$scope.newUser = new User();
-	}
+	};
 
 	$scope.sendUserInfo = function() {
 		$scope.user.$login().then(function() {
@@ -27,7 +27,7 @@ login.controller("LoginController", ["$scope", "$mdToast", "User", "$location", 
       console.log(err);
 			$mdToast.show($mdToast.simple().theme('default').content(err.data.error));
 		});
-	}
+	};
 
 	$scope.sendNewUserInfo = function() {
 		var u = $scope.newUser;
@@ -40,5 +40,5 @@ login.controller("LoginController", ["$scope", "$mdToast", "User", "$location", 
 		}, function(err) {
 			$mdToast.show($mdToast.simple().theme('default').content(err.data.error));
 		});
-	}
+	};
 }]);

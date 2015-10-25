@@ -19,6 +19,7 @@ var UserSchema = require('./db/userSchema.js');
 var ProfileSchema = require('./db/profileSchema.js');
 var DungeonSchema = require('./db/dungeonSchema.js');
 var MonsterSchema = require('./db/monsterSchema.js');
+
 var User = mongoose.model('User', UserSchema);
 var Profile = mongoose.model('Profile', ProfileSchema);
 var Dungeon = mongoose.model('Dungeon', DungeonSchema);
@@ -28,11 +29,13 @@ app.use(express.static('client'));
 app.use('/bower_components', express.static('bower_components'));
 
 var authentication = require('./routers/authentication.js')(User);
+var profile = require('./routers/profile.js')(User, Profile);
 
 app.use(session({secret: "ther3als3cr3th3lly3ahil0v33ncrypti0n"}));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: true}));
 app.use(authentication);
+app.use(profile);
 
 var server = app.listen(5050, function() {
 	var host = server.address().address;

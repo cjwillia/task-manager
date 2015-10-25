@@ -1,4 +1,5 @@
 resources.factory("Profile", ["$resource", function($resource) {
-  //TODO this simply won't do.
-  return $resource('/profile/:userId', {userId:'@id'});
+  return $resource('/profile', {}, {
+      query: {method: "GET", url: '/profiles', isArray: true}
+  });
 }]);

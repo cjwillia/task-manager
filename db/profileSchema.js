@@ -23,6 +23,10 @@ var ProfileSchema = mongoose.Schema({
     type: Number,
     required: true
   },
+  belonging_to: {
+      type: ObjectId, ref: 'User',
+      required: true
+  },
   active_dungeons: [{type: ObjectId, ref: 'Dungeon'}],
   targetLocks: [targetLocks]
 });
