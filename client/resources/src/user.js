@@ -3,6 +3,10 @@ resources.factory("User", ["$resource", function($resource) {
         login: {
             method: 'POST',
             url: '/login'
+        },
+        logout: {
+            method: 'DELETE',
+            url: '/login'
         }
     });
 }]);

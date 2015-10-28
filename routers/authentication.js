@@ -29,6 +29,10 @@ module.exports = function(User) {
         });
     });
 
+    router.get('/login', function(req, res) {
+        res.redirect('/');
+    });
+
     router.post('/login', function(req, res) {
         User.findOne({
             username: req.body.username
@@ -70,7 +74,7 @@ module.exports = function(User) {
         checkLoginSession(req.session, next, fail);
     });
 
-    router.post("/logout", function(req, res) {
+    router.delete("/login", function(req, res) {
         req.session.destroy();
         res.sendStatus(200);
     });
